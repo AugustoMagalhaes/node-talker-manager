@@ -1,16 +1,12 @@
 const fs = require('fs').promises;
 
-const talkerFile = 'talker.json';
-
-const mainRead = async () => {
+const mainRead = async (PATH) => {
   try {
-    const data = await fs.readFile(talkerFile, 'utf-8');
-    console.log(data);
+    const data = await fs.readFile(PATH, 'utf-8');
+    return JSON.parse(data);
   } catch (err) {
-    throw new Error('Impossible to read file.');
+    throw new Error(`Impossible to read file: ${err.message}`);
   }
 };
-
-mainRead();
 
 module.exports = mainRead;

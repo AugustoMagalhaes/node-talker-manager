@@ -49,7 +49,7 @@ async (req, res) => {
 });
 
 talkerRouter.put('/:id', validateName,
-validateTalk, 
+validateTalk,
 validateAge,
 async (req, res) => {
   const {

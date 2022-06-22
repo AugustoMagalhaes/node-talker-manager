@@ -17,7 +17,7 @@ const checkWatchedAt = (req) => {
 
 const checkRate = (req) => {
   const { talk: { rate } } = req.body;
-  if (!rate) return messages.missRate;
+  if (!rate && rate !== 0) return messages.missRate;
   if (rate < 1 || rate > 5) return messages.failedRate;
   return true;
 };

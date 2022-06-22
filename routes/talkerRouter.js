@@ -20,7 +20,9 @@ talkerRouter.get('/', async (req, res) => {
 talkerRouter.get('/search', authMiddleware, async (req, res) => {
   const { q } = req.query;
   const talkers = await mainRead(PATH);
+
   if (!q) return res.status(200).json(talkers);
+
   const filteredTalkers = talkers.filter((tlkr) => tlkr.name.includes(q));
 
   if (filteredTalkers.length === 0) return res.status(200).json([]);
@@ -30,31 +32,33 @@ talkerRouter.get('/search', authMiddleware, async (req, res) => {
 talkerRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
   const data = await mainRead(PATH);
+
   const foundTalker = data.find((el) => el.id === Number(id));
+
   if (foundTalker) return res.status(200).json(foundTalker);
+
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 talkerRouter.use(authMiddleware);
 
-talkerRouter.post('/', validateName, 
-validateTalk, 
+talkerRouter.post('/', validateName,
+validateTalk,
 validateAge,
 async (req, res) => {
   const { name, age, talk } = req.body;
+
   const newTalker = {
     id: await generateId(),
     name,
     age,
     talk,
   };
+
   const data = await mainRead(PATH);
   const newData = [...data, newTalker];
+
   await mainWrite(PATH, newData);
-  const allTalkers = await mainRead(PATH);
-  console.log('------ Palestrantes ---------');
-  console.log(allTalkers);
-  console.log('-----------------------------');
   return res.status(201).json(newTalker);
 });
 
@@ -67,14 +71,16 @@ async (req, res) => {
     age,
     talk,
   } = req.body;
+
   const { id } = req.params;
   const talkers = await mainRead(PATH);
   const talkerIndex = talkers.findIndex((tlkr) => tlkr.id === Number(id));
-  console.log(talkers);
+
   const modifiedTalker = { id: Number(id), name, age, talk };
-  console.log('iiiiiiid', id);
   talkers[talkerIndex] = modifiedTalker;
+
   await mainWrite(PATH, talkers);
+
   return res.status(200).json(talkers[talkerIndex]);
 });
 

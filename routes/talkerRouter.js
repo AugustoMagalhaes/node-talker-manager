@@ -46,4 +46,19 @@ async (req, res) => {
   return res.status(201).json(newData);
 });
 
+talkerRouter.put('/:id', async (req, res) => {
+  const {
+    name,
+    age,
+    talk,
+  } = req.body;
+  const { id } = req.params;
+  const talkers = await mainRead(PATH);
+  const talkerIndex = talkers.findIndex((tlkr) => tlkr.id === Number(id));
+  console.log(talkers);
+  const modifiedTalker = { ...talkers[talkerIndex], name, age, talk };
+  const newTalkers = [...talkers, modifiedTalker];
+  await mainWrite(PATH, newTalkers);
+});
+
 module.exports = talkerRouter;

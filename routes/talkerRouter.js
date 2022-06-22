@@ -32,21 +32,26 @@ validateTalk,
 validateAge,
 async (req, res) => {
   const { name, age, talk } = req.body;
-  const newData = {
+  const newTalker = {
     id: await generateId(),
     name,
     age,
     talk,
   };
+  const data = await mainRead(PATH);
+  const newData = [...data, newTalker];
   await mainWrite(PATH, newData);
   const allTalkers = await mainRead(PATH);
   console.log('------ Palestrantes ---------');
   console.log(allTalkers);
   console.log('-----------------------------');
-  return res.status(201).json(newData);
+  return res.status(201).json(newTalker);
 });
 
-talkerRouter.put('/:id', async (req, res) => {
+talkerRouter.put('/:id', validateName,
+validateTalk, 
+validateAge,
+async (req, res) => {
   const {
     name,
     age,
@@ -56,9 +61,11 @@ talkerRouter.put('/:id', async (req, res) => {
   const talkers = await mainRead(PATH);
   const talkerIndex = talkers.findIndex((tlkr) => tlkr.id === Number(id));
   console.log(talkers);
-  const modifiedTalker = { ...talkers[talkerIndex], name, age, talk };
-  const newTalkers = [...talkers, modifiedTalker];
-  await mainWrite(PATH, newTalkers);
+  const modifiedTalker = { id: Number(id), name, age, talk };
+  console.log('iiiiiiid', id);
+  talkers[talkerIndex] = modifiedTalker;
+  await mainWrite(PATH, talkers);
+  return res.status(200).json(talkers[talkerIndex]);
 });
 
 module.exports = talkerRouter;

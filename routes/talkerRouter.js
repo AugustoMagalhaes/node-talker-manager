@@ -31,7 +31,7 @@ talkerRouter.post('/', validateTalk, async (req, res) => {
   console.log('------ Palestrantes ---------');
   console.log(allTalkers);
   console.log('-----------------------------');
-  return res.status(201).json({ message: 'Palestrante criado com sucesso' });
+  return res.status(201).json({ newData });
 });
 
 module.exports = talkerRouter;

@@ -4,8 +4,8 @@ const mainRead = require('./mainRead');
 const mainWrite = async (PATH, newData) => {
   try {
     const data = await mainRead(PATH);
-    data.push(newData);
-    const striginfiedData = JSON.stringify(data);
+    const appendedData = [...data, newData];
+    const striginfiedData = JSON.stringify(appendedData);
     await fs.writeFile(PATH, striginfiedData);
   } catch (err) {
     throw new Error(`Impossible to write in ${PATH}`);

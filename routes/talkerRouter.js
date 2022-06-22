@@ -5,9 +5,10 @@ const talkerRouter = express.Router();
 const mainRead = require('../helpers/mainRead');
 const mainWrite = require('../helpers/mainWrite');
 const authMiddleware = require('../middlewares/authMiddleware');
-const validateTalk = require('../middlewares/validateTalk');
 const validateName = require('../middlewares/validateName');
 const validateAge = require('../middlewares/validateAge');
+const validateTalk = require('../middlewares/validateTalk');
+const generateId = require('../helpers/generateId');
 
 const PATH = 'talker.json';
 
@@ -30,13 +31,19 @@ talkerRouter.post('/', validateName,
 validateTalk, 
 validateAge,
 async (req, res) => {
-  const newData = req.body;
+  const { name, age, talk } = req.body;
+  const newData = {
+    id: await generateId(),
+    name,
+    age,
+    talk,
+  };
   await mainWrite(PATH, newData);
   const allTalkers = await mainRead(PATH);
   console.log('------ Palestrantes ---------');
   console.log(allTalkers);
   console.log('-----------------------------');
-  return res.status(201).json({ newData });
+  return res.status(201).json(newData);
 });
 
 module.exports = talkerRouter;

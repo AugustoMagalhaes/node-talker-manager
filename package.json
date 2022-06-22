@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --runInBand --verbose --forceExit",
     "posttest": "cp tests/seed.json talker.json",
-    "restore": "cp tests/seed.json talker.json",
+    "restore": "cp seed.json talker.json",
     "start": "node index.js",
     "dev": "nodemon index.js --ignore 'talker.json'",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."

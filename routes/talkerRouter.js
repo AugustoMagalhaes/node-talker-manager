@@ -23,7 +23,8 @@ talkerRouter.get('/search', authMiddleware, async (req, res) => {
 
   if (!q) return res.status(200).json(talkers);
 
-  const filteredTalkers = talkers.filter((tlkr) => tlkr.name.includes(q));
+  const filteredTalkers = talkers.filter((tlkr) => tlkr.name.toLowerCase()
+    .includes(q.toLowerCase()));
 
   if (filteredTalkers.length === 0) return res.status(200).json([]);
   return res.status(200).json(filteredTalkers);

@@ -5,6 +5,7 @@ const talkerRouter = express.Router();
 const mainRead = require('../helpers/mainRead');
 const mainWrite = require('../helpers/mainWrite');
 const authMiddleware = require('../middlewares/authMiddleware');
+const validateTalk = require('../middlewares/validateTalk');
 
 const PATH = 'talker.json';
 
@@ -23,11 +24,13 @@ talkerRouter.get('/:id', async (req, res) => {
 
 talkerRouter.use(authMiddleware);
 
-talkerRouter.post('/', async (req, res) => {
+talkerRouter.post('/', validateTalk, async (req, res) => {
   const newData = req.body;
   await mainWrite(PATH, newData);
   const allTalkers = await mainRead(PATH);
+  console.log('------ Palestrantes ---------');
   console.log(allTalkers);
+  console.log('-----------------------------');
   return res.status(201).json({ message: 'Palestrante criado com sucesso' });
 });
 

@@ -9,14 +9,17 @@ const messages = {
 const checkWatchedAt = (req) => {
   const { talk: { watchedAt } } = req.body;
   if (!watchedAt) return messages.missWatched;
+
   const dateRegExp = new RegExp(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/[12][0-9]{3}$/);
   const checkDateFormat = dateRegExp.test(watchedAt);
+
   if (!checkDateFormat) return messages.failedWatched;
   return true;
 };
 
 const checkRate = (req) => {
   const { talk: { rate } } = req.body;
+
   if (!rate && rate !== 0) return messages.missRate;
   if (rate < 1 || rate > 5) return messages.failedRate;
   return true;
@@ -26,8 +29,10 @@ const validateTalk = (req, res, next) => {
   const { talk } = req.body;
 
   if (!talk) return res.status(400).json({ message: messages.missTalk });
+
   const checkedWatched = checkWatchedAt(req);
   const checkedRate = checkRate(req);
+
   if (typeof checkedWatched !== 'boolean') {
     return res.status(400).json({ message: checkedWatched });
   }

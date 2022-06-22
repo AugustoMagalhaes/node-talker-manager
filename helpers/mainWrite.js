@@ -9,8 +9,4 @@ const mainWrite = async (PATH, newData) => {
   }
 };
 
-module.exports = mainWrite; 
-
-/* const data = await mainRead(PATH);
-    const appendedData = [...data, newData];
-    const striginfiedData = JSON.stringify(appendedData); */
+module.exports = mainWrite;

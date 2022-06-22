@@ -68,4 +68,17 @@ async (req, res) => {
   return res.status(200).json(talkers[talkerIndex]);
 });
 
+talkerRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkers = await mainRead(PATH);
+  const deleteIndex = talkers.findIndex((tlkr) => tlkr.id === Number(id));
+
+  if (deleteIndex === -1) return res.status(404).json({ message: 'Palestrante não encontrado' });
+
+  talkers.splice(deleteIndex, 1);
+  await mainWrite(PATH, talkers);
+
+  return res.status(204).end();
+});
+
 module.exports = talkerRouter;

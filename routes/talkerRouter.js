@@ -4,6 +4,7 @@ const talkerRouter = express.Router();
 
 const mainRead = require('../helpers/mainRead');
 const mainWrite = require('../helpers/mainWrite');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 const PATH = 'talker.json';
 
@@ -20,12 +21,14 @@ talkerRouter.get('/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
+talkerRouter.use(authMiddleware);
+
 talkerRouter.post('/', async (req, res) => {
   const newData = req.body;
-  const newTalkers = await mainWrite(PATH, newData);
-  const test = await mainRead(PATH);
-  console.log(test);
-  return res.status(201).json(newTalkers);
+  await mainWrite(PATH, newData);
+  const allTalkers = await mainRead(PATH);
+  console.log(allTalkers);
+  return res.status(201).json({ message: 'Palestrante criado com sucesso' });
 });
 
 module.exports = talkerRouter;

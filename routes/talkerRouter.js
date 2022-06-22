@@ -6,6 +6,7 @@ const mainRead = require('../helpers/mainRead');
 const mainWrite = require('../helpers/mainWrite');
 const authMiddleware = require('../middlewares/authMiddleware');
 const validateTalk = require('../middlewares/validateTalk');
+const validateName = require('../middlewares/validateName');
 
 const PATH = 'talker.json';
 
@@ -24,7 +25,7 @@ talkerRouter.get('/:id', async (req, res) => {
 
 talkerRouter.use(authMiddleware);
 
-talkerRouter.post('/', validateTalk, async (req, res) => {
+talkerRouter.post('/', validateName, validateTalk, async (req, res) => {
   const newData = req.body;
   await mainWrite(PATH, newData);
   const allTalkers = await mainRead(PATH);

@@ -44,8 +44,8 @@ talkerRouter.get('/:id', async (req, res) => {
 talkerRouter.use(authMiddleware);
 
 talkerRouter.post('/', validateName,
-validateTalk,
 validateAge,
+validateTalk,
 async (req, res) => {
   const { name, age, talk } = req.body;
 
@@ -64,8 +64,8 @@ async (req, res) => {
 });
 
 talkerRouter.put('/:id', validateName,
-validateTalk,
 validateAge,
+validateTalk,
 async (req, res) => {
   const {
     name,
